@@ -32,5 +32,5 @@ example
 Call spacemacs anywhere the same way you call emacs e.g. `$ spacemacs App.clj`
 
 ```sh
-$ export PATH="~/spacemacs/spacemacs:$PATH"
+$ export PATH="~/spacemacs/scripts:$PATH"
 ```
