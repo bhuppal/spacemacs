@@ -31,16 +31,16 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     html
+     ;; ----------------------------------------------------------------
+     ;; <M-m f e R> (Emacs style) to install them.
+     ;; ----------------------------------------------------------------
+     yaml
      clojure
      javascript
      spotify
      slack
      haskell
-     ;; ----------------------------------------------------------------
-     ;; Example of useful layers you may want to use right away.
-     ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
-     ;; <M-m f e R> (Emacs style) to install them.
-     ;; ----------------------------------------------------------------
      helm
      osx
      auto-completion
@@ -49,9 +49,11 @@ values."
      git
      markdown
      ;; org
-     ;; (shell :variables
-     ;;        shell-default-height 30
-     ;;        shell-default-position 'bottom)
+     (shell :variables
+            shell-default-height 30
+            shell-default-position 'bottom)
+
+
      spell-checking
      syntax-checking
      ;; version-control
@@ -64,6 +66,8 @@ values."
    '(
      rjsx-mode
      yasnippet-snippets
+     dart-mode
+     all-the-icons
      )
    
    ;; A list of packages that cannot be updated.
@@ -315,6 +319,8 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
+
+
   )
 
 (defun dotspacemacs/user-config ()
@@ -325,10 +331,17 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   (yas-global-mode 1)
-  ;; use rjsx-mode for .jsx .js files and webmode for mjml
-  (add-to-list 'auto-mode-alist '("\\.js$" . rjsx-mode))
-  (add-to-list 'auto-mode-alist '("\\.jsx$" . rjsx-mode))
-  (add-to-list 'auto-mode-alist '("\\.mjml$" . web-mode))
+
+  ;; use rjsx-mode for .js* files and webmode for mjml
+  (add-to-list 'auto-mode-alist '("\\.js.*$" . rjsx-mode))
+
+  ;; dotfiles with sh-mode
+  (add-to-list 'auto-mode-alist '("/\\.[a-zA-Z0-09]*rc$" . sh-mode))
+  (add-to-list 'auto-mode-alist '("/\[a-zA-Z0-09]*rc$" . sh-mode))
+
+
+  ;; ignore external libs code in global search etc
+  (setq projectile-globally-ignored-directories '("node_modules" ".pub-cache"))
 
   ;; spotify rebind
   (global-set-key (kbd "M-m m u s p") 'spotify-playpause )
@@ -339,7 +352,23 @@ you should place your code here."
   ;; slack
   (load-file "./.private/slack-config.el")
   (slack-start)
+
+  ;; neotree
+  (setq neo-smart-open t)
+  (global-set-key (kbd "M-s M-s s") 'neotree-toggle) 
+  (setq neo-theme 'icons)
+
+
+
+  ;; walk through windows
+
+  ;; resize windows
+  (global-set-key (kbd "C-c C-=") 'enlarge-window-horizontally)
+  (global-set-key (kbd "C-c C--") 'shrink-window-horizontally)
+  (global-set-key (kbd "C-c C-0") 'enlarge-window)
+  (global-set-key (kbd "C-c C-p") 'shrink-window)
   )
+
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.q
@@ -350,7 +379,7 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (slack emojify circe oauth2 websocket ht alert log4e gntp spotify helm-spotify-plus multi clojure-snippets clj-refactor inflections paredit cider-eval-sexp-fu cider sesman queue parseedn clojure-mode parseclj a yasnippet-snippets tern rjsx-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data markdown-mode magit-popup gitignore-mode flyspell-correct pos-tip magit git-commit with-editor transient web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc coffee-mode flycheck ghc haskell-mode company yasnippet auto-complete define-word ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline smeargle reveal-in-osx-finder restart-emacs rainbow-delimiters popwin persp-mode pcre2el pbcopy paradox osx-trash osx-dictionary orgit org-bullets open-junk-file neotree move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum linum-relative link-hint launchctl intero indent-guide hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag haskell-snippets google-translate golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flycheck-haskell flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish company-statistics company-ghci company-ghc company-cabal column-enforce-mode cmm-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help memoize all-the-icons yaml-mode dart-mode slack emojify circe oauth2 websocket ht alert log4e gntp spotify helm-spotify-plus multi clojure-snippets clj-refactor inflections paredit cider-eval-sexp-fu cider sesman queue parseedn clojure-mode parseclj a yasnippet-snippets tern rjsx-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data markdown-mode magit-popup gitignore-mode flyspell-correct pos-tip magit git-commit with-editor transient web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc coffee-mode flycheck ghc haskell-mode company yasnippet auto-complete define-word ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline smeargle reveal-in-osx-finder restart-emacs rainbow-delimiters popwin persp-mode pcre2el pbcopy paradox osx-trash osx-dictionary orgit org-bullets open-junk-file neotree move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum linum-relative link-hint launchctl intero indent-guide hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag haskell-snippets google-translate golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flycheck-haskell flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish company-statistics company-ghci company-ghc company-cabal column-enforce-mode cmm-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
