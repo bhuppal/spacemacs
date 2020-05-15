@@ -12,11 +12,6 @@ third part installs
 `pip3 install pygments`
 
 
-# fonts
-
-`M-x all-the-icons-install-fonts`
-
-copy all the fonts installed in `~/spacemacs/path/to/fonts` to `~/path/to/fonts`
 # .private
 
 ## slack-config.el
