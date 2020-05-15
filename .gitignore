@@ -1,2 +1,14 @@
+# emacs
 *~
+
+# private
 .private/*
+
+# MacOS
+**/.DS_Store
+
+# ???
+.npm/*
+.*json
+.config/*
+.bash*

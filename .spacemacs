@@ -67,7 +67,8 @@ values."
      dart-mode
      all-the-icons
      )
-   
+
+
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -317,7 +318,7 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-
+  (add-to-list 'load-path "~/laurisp")
 
   )
 
@@ -329,7 +330,7 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
-  (require 'laurisp "~/laurisp/laurisp.el")
+  (require 'laurisp)
 
   (yas-global-mode 1)
 
@@ -374,6 +375,17 @@ you should place your code here."
   (global-set-key (kbd "C-c C--") 'shrink-window-horizontally)
   (global-set-key (kbd "C-c C-0") 'enlarge-window)
   (global-set-key (kbd "C-c C-p") 'shrink-window)
+
+  ;; paredit-mode
+  (add-hook 'emacs-lisp-mode-hook                    #'enable-paredit-mode)
+  (add-hook 'eval-expression-minibuffer-setup-hook   #'enable-paredit-mode)
+  (add-hook 'ielm-mode-hook                          #'enable-paredit-mode)
+  (add-hook 'lisp-mode-hook                          #'enable-paredit-mode)
+  (add-hook 'lisp-interaction-mode-hook              #'enable-paredit-mode)
+  (add-hook 'scheme-mode-hook                        #'enable-paredit-mode)
+  (add-hook 'clojure-mode-hook                       #'enable-paredit-mode)
+
+
   )
 
 

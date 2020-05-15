@@ -4,6 +4,8 @@
 ;; GNU Public License 3.0
 ;;
 
+(require 'seq)
+
 ;; import all laurisp files 
 (let* ((all-files (directory-files-recursively "~/laurisp" "^[a-z\\-].*\\.el$"))
        (loaded-files
