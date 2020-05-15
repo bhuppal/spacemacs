@@ -1,4 +1,13 @@
-(require 'laurisp "~/laurisp/laurisp.el")
+;;
+;; @author Laura Viglioni
+;; 2020
+;; GNU Public License 3.0
+;;
+
+
+;;
+;; neotree icons functions
+;;
 
 (defun get-ttfs (dir)
   "get .ttf files from dir"

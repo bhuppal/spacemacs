@@ -1,5 +1,12 @@
 ;;
-;; List related
+;; @author Laura Viglioni
+;; 2020
+;; GNU Public License 3.0
+;;
+
+
+;;
+;; List related functions
 ;;
 
 (defun contains (list element)

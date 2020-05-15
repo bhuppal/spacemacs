@@ -1,18 +1,24 @@
-(load-file (car (directory-files-recursively "./" "lists\\.el")))
+;;
+;; @author Laura Viglioni
+;; 2020
+;; GNU Public License 3.0
+;;
 
-;; import all files 
+;; import all laurisp files 
+(let* ((all-files (directory-files-recursively "~/laurisp" "^[a-z\\-].*\\.el$"))
+       (loaded-files
+        (mapcar (lambda (laurisp-file)
+                  (if (not (string-match-p "laurisp\\.el" laurisp-file))
+                      (load-file laurisp-file)
+                    t))
+                all-files)))
+  (if (seq-reduce (lambda (acc val) (and acc val)) loaded-files t)
+      "laurisp files loaded!"
+    "an error has ocurred"))
 
-(defun load-all ()
-  "load all files except "
-  (let* ((all-files (directory-files "./" t "\\.el$"))
-         (files-not-to-import
-          (directory-files "./" t
-                           (rx (or "laurisp.el" (eval (concat (file-name-base) ".el")) "#"))))
-         (files-to-import (list-difference all-files files-not-to-import)))
-    (dolist (laurisp-file files-to-import)
-      (load-file laurisp-file))))
 
-(load-all)
+
+
 
 (provide 'laurisp)
 

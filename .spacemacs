@@ -329,7 +329,7 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
-  (require 'laurisp "./laurisp/laurisp.el")
+  (require 'laurisp "~/laurisp/laurisp.el")
 
   (yas-global-mode 1)
 
@@ -375,6 +375,7 @@ you should place your code here."
   (global-set-key (kbd "C-c C-0") 'enlarge-window)
   (global-set-key (kbd "C-c C-p") 'shrink-window)
   )
+
 
 
 ;; Do not write anything past this comment. This is where Emacs will
