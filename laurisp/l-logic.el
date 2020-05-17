@@ -13,4 +13,4 @@
   "returns nil/t"
   (not (not x)))
 
-(provide 'logic)
+

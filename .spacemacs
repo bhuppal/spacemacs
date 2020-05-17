@@ -353,15 +353,14 @@ you should place your code here."
   (global-set-key (kbd "M-m m u s s") 'helm-spotify-plus ) ; search
 
   ;; slack
-  (load-file "./.private/slack-config.el")
+  (load-file "~/.private/slack-config.el")
   (slack-start)
 
   ;; neotree
   (setq neo-smart-open t)
   (global-set-key (kbd "M-s M-s s") 'neotree-toggle) 
-  (setq neo-theme 'icons)
   (activate-neotree-icons)
-
+  (setq neo-theme 'icons)
 
 
   ;; walk through windows
@@ -377,13 +376,13 @@ you should place your code here."
   (global-set-key (kbd "C-c C-p") 'shrink-window)
 
   ;; paredit-mode
-  (add-hook 'emacs-lisp-mode-hook                    #'enable-paredit-mode)
-  (add-hook 'eval-expression-minibuffer-setup-hook   #'enable-paredit-mode)
-  (add-hook 'ielm-mode-hook                          #'enable-paredit-mode)
-  (add-hook 'lisp-mode-hook                          #'enable-paredit-mode)
-  (add-hook 'lisp-interaction-mode-hook              #'enable-paredit-mode)
-  (add-hook 'scheme-mode-hook                        #'enable-paredit-mode)
-  (add-hook 'clojure-mode-hook                       #'enable-paredit-mode)
+  (add-hook 'emacs-lisp-mode-hook                    'enable-paredit-mode)
+  (add-hook 'eval-expression-minibuffer-setup-hook   'enable-paredit-mode)
+  (add-hook 'ielm-mode-hook                          'enable-paredit-mode)
+  (add-hook 'lisp-mode-hook                          'enable-paredit-mode)
+  (add-hook 'lisp-interaction-mode-hook              'enable-paredit-mode)
+  (add-hook 'scheme-mode-hook                        'enable-paredit-mode)
+  (add-hook 'clojure-mode-hook                       'enable-paredit-mode)
 
 
   )

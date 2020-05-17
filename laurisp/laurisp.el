@@ -6,12 +6,13 @@
 
 (require 'seq)
 
-;; import all laurisp files 
+
+;; import all laurisp files
 (let* ((all-files (directory-files-recursively "~/laurisp" "^[a-z\\-].*\\.el$"))
        (loaded-files
         (mapcar (lambda (laurisp-file)
                   (if (not (string-match-p "laurisp\\.el" laurisp-file))
-                      (load-file laurisp-file)
+                      (load laurisp-file t t)
                     t))
                 all-files)))
   (if (seq-reduce (lambda (acc val) (and acc val)) loaded-files t)
