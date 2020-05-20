@@ -343,8 +343,13 @@ you should place your code here."
 
 
 
-  ;; ignore external libs code in global search etc
-  (setq projectile-globally-ignored-directories '("node_modules" ".pub-cache"))
+  ;; ignore dirs and files in projectile
+  (setq projectile-globally-ignored-directories
+        '(".git" ".svn" "out" "repl" "target" "venv" ".pub-cache" "node_modules" ))
+
+  (setq projectile-globally-ignored-files
+        '( ".DS_Store" "*.gz" "*.pyc" "*.jar" "*.tar.gz" "*.tgz" "*.zip" "*.png" ".packages"))
+
 
   ;; spotify rebind
   (global-set-key (kbd "M-m m u s p") 'spotify-playpause )
