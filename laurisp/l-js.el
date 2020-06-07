@@ -41,3 +41,16 @@ const %s = ({}) => {
          (file (touch filename dir)))
     (echo-into file (react-template component-name))))
 
+ 
+(defun import-file-js (component file-name)
+  ""
+  (interactive "sWhat do you want to import? \nfFrom? ")
+  (let* ((path (remove-suffix (relative-path (buffer-file-name) file-name)))
+         (imp (format "import %s from '%s';\n" component path))
+         (current-point (+ (point) (length imp))))
+    (progn
+      (beginning-of-buffer)
+      (search-forward-regexp "^$")
+      (insert imp)
+      (goto-char current-point))))
+

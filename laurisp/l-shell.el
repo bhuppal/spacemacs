@@ -17,6 +17,11 @@
   "list files in directory"
   (directory-files (or dir ".")))
 
+(defun projects-in (dir)
+  "get full path of all dirs in dir - except . and .."
+  (if (file-directory-p dir)
+      (seq-filter #'file-directory-p (directory-files dir t "[a-z]"))
+    '()))
 
 (defun touch (FILENAME &optional DIR)
   "Creates a empty file if it does not exists, returns the file or nil"

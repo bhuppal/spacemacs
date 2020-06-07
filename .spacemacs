@@ -29,6 +29,8 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     csv
+     typescript
      html
      ;; ----------------------------------------------------------------
      ;; <M-m f e R> (Emacs style) to install them.
@@ -136,7 +138,7 @@ values."
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
    dotspacemacs-startup-lists '((recents . 5)
-                                (projects . 7))
+                                (projects . 20))
    ;; True if the home buffer should respond to resize events.
    dotspacemacs-startup-buffer-responsive t
    ;; Default major mode of the scratch buffer (default `text-mode')
@@ -336,19 +338,29 @@ you should place your code here."
 
   ;; use rjsx-mode for .js* files and webmode for mjml
   (add-to-list 'auto-mode-alist '("\\.js.*$" . rjsx-mode))
+  (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
 
   ;; dotfiles with sh-mode
   (add-to-list 'auto-mode-alist '("/\\.[a-zA-Z0-09]*rc$" . sh-mode))
   (add-to-list 'auto-mode-alist '("/\[a-zA-Z0-09]*rc$" . sh-mode))
 
-
+  ;;
+  ;; Projectile configs
+  ;;
 
   ;; ignore dirs and files in projectile
   (setq projectile-globally-ignored-directories
-        '(".git" ".svn" "out" "repl" "target" "venv" ".pub-cache" "node_modules" ))
+        '(".git" ".svn" "out" "repl" "target" "venv" ".pub-cache" "node_modules" "ios" "android"))
 
   (setq projectile-globally-ignored-files
         '( ".DS_Store" "*.gz" "*.pyc" "*.jar" "*.tar.gz" "*.tgz" "*.zip" "*.png" ".packages"))
+
+  (setq projectile-project-search-path '("~/../Loft/" "~/../Personal/"))
+
+
+
+
+
 
 
   ;; spotify rebind
@@ -381,6 +393,7 @@ you should place your code here."
   (global-set-key (kbd "C-c C-p") 'shrink-window)
 
   ;; paredit-mode
+  (sp-use-paredit-bindings) ;; other modules
   (add-hook 'emacs-lisp-mode-hook                    'enable-paredit-mode)
   (add-hook 'eval-expression-minibuffer-setup-hook   'enable-paredit-mode)
   (add-hook 'ielm-mode-hook                          'enable-paredit-mode)
@@ -403,7 +416,7 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (clomacs xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help memoize all-the-icons yaml-mode dart-mode slack emojify circe oauth2 websocket ht alert log4e gntp spotify helm-spotify-plus multi clojure-snippets clj-refactor inflections paredit cider-eval-sexp-fu cider sesman queue parseedn clojure-mode parseclj a yasnippet-snippets tern rjsx-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data markdown-mode magit-popup gitignore-mode flyspell-correct pos-tip magit git-commit with-editor transient web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc coffee-mode flycheck ghc haskell-mode company yasnippet auto-complete define-word ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline smeargle reveal-in-osx-finder restart-emacs rainbow-delimiters popwin persp-mode pcre2el pbcopy paradox osx-trash osx-dictionary orgit org-bullets open-junk-file neotree move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum linum-relative link-hint launchctl intero indent-guide hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag haskell-snippets google-translate golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flycheck-haskell flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish company-statistics company-ghci company-ghc company-cabal column-enforce-mode cmm-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (csv-mode tide typescript-mode clomacs xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help memoize all-the-icons yaml-mode dart-mode slack emojify circe oauth2 websocket ht alert log4e gntp spotify helm-spotify-plus multi clojure-snippets clj-refactor inflections paredit cider-eval-sexp-fu cider sesman queue parseedn clojure-mode parseclj a yasnippet-snippets tern rjsx-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data markdown-mode magit-popup gitignore-mode flyspell-correct pos-tip magit git-commit with-editor transient web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc coffee-mode flycheck ghc haskell-mode company yasnippet auto-complete define-word ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline smeargle reveal-in-osx-finder restart-emacs rainbow-delimiters popwin persp-mode pcre2el pbcopy paradox osx-trash osx-dictionary orgit org-bullets open-junk-file neotree move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum linum-relative link-hint launchctl intero indent-guide hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag haskell-snippets google-translate golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flycheck-haskell flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish company-statistics company-ghci company-ghc company-cabal column-enforce-mode cmm-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -12,3 +12,7 @@
 .*json
 .config/*
 .bash*
+.lein/*
+.config/*
+Library/Caches/*
+Library/Preferences/*
