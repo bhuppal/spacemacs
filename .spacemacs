@@ -67,6 +67,7 @@ values."
      rjsx-mode
      yasnippet-snippets
      dart-mode
+     prettier-js
      all-the-icons
      )
 
@@ -336,6 +337,15 @@ you should place your code here."
 
   (yas-global-mode 1)
 
+  ;; macOS bullsh*t
+  (when (memq window-system '(mac ns))
+    (package-install 'exec-path-from-shell)
+    (exec-path-from-shell-initialize))
+
+  ;; flycheck
+  (global-flycheck-mode)
+  (add-hook 'after-init-hook #'global-flycheck-mode)
+  
   ;; use rjsx-mode for .js* files and webmode for mjml
   (add-to-list 'auto-mode-alist '("\\.js.*$" . rjsx-mode))
   (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
@@ -350,17 +360,12 @@ you should place your code here."
 
   ;; ignore dirs and files in projectile
   (setq projectile-globally-ignored-directories
-        '(".git" ".svn" "out" "repl" "target" "venv" ".pub-cache" "node_modules" "ios" "android"))
+        '(".git" ".svn" "out" "repl" "target" "venv" ".pub-cache" "node_modules" "ios" "android" "dist"))
 
   (setq projectile-globally-ignored-files
         '( ".DS_Store" "*.gz" "*.pyc" "*.jar" "*.tar.gz" "*.tgz" "*.zip" "*.png" ".packages"))
 
   (setq projectile-project-search-path '("~/../Loft/" "~/../Personal/"))
-
-
-
-
-
 
 
   ;; spotify rebind
@@ -379,7 +384,7 @@ you should place your code here."
   (activate-neotree-icons)
   (setq neo-theme 'icons)
 
-
+  (print standard-indent)
   ;; walk through windows
   (global-set-key (kbd "C-x <up>") 'evil-window-up)
   (global-set-key (kbd "C-x <down>") 'evil-window-down)
@@ -414,9 +419,12 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(js2-strict-missing-semi-warning nil)
  '(package-selected-packages
    (quote
-    (csv-mode tide typescript-mode clomacs xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help memoize all-the-icons yaml-mode dart-mode slack emojify circe oauth2 websocket ht alert log4e gntp spotify helm-spotify-plus multi clojure-snippets clj-refactor inflections paredit cider-eval-sexp-fu cider sesman queue parseedn clojure-mode parseclj a yasnippet-snippets tern rjsx-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data markdown-mode magit-popup gitignore-mode flyspell-correct pos-tip magit git-commit with-editor transient web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc coffee-mode flycheck ghc haskell-mode company yasnippet auto-complete define-word ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline smeargle reveal-in-osx-finder restart-emacs rainbow-delimiters popwin persp-mode pcre2el pbcopy paradox osx-trash osx-dictionary orgit org-bullets open-junk-file neotree move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum linum-relative link-hint launchctl intero indent-guide hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag haskell-snippets google-translate golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flycheck-haskell flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish company-statistics company-ghci company-ghc company-cabal column-enforce-mode cmm-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (prettier-js csv-mode tide typescript-mode clomacs xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help memoize all-the-icons yaml-mode dart-mode slack emojify circe oauth2 websocket ht alert log4e gntp spotify helm-spotify-plus multi clojure-snippets clj-refactor inflections paredit cider-eval-sexp-fu cider sesman queue parseedn clojure-mode parseclj a yasnippet-snippets tern rjsx-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data markdown-mode magit-popup gitignore-mode flyspell-correct pos-tip magit git-commit with-editor transient web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc coffee-mode flycheck ghc haskell-mode company yasnippet auto-complete define-word ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline smeargle reveal-in-osx-finder restart-emacs rainbow-delimiters popwin persp-mode pcre2el pbcopy paradox osx-trash osx-dictionary orgit org-bullets open-junk-file neotree move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum linum-relative link-hint launchctl intero indent-guide hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag haskell-snippets google-translate golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flycheck-haskell flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish company-statistics company-ghci company-ghc company-cabal column-enforce-mode cmm-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
+ '(standard-indent 2)
+ '(tab-width 1))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -53,6 +53,16 @@
   (replace-regexp-in-string "\\.[a-z]*$" ""  file))
 
 
+(defun insert-text-on-first-empty-line (text current-point)
+  ""
+  (progn
+    (beginning-of-buffer)
+    (search-forward-regexp "^$")
+    (insert text)
+    (goto-char (+ current-point (length text)))
+    t))
+
+
 (defun new-laurisp-file (name dir)
   "create laurisp file"
   (interactive "sInsert filename: \nDWhere? ")
@@ -77,44 +87,3 @@
          (relative-path (join-path path1 path2)))
     relative-path))
 
-;; (defun teste ()
-;; ""
-;; (interactive)
-;; (let* ((buf (get-buffer-create "*teste*"))
-;;        )
-
-;;   ;; (read-str (get-key))
-;;   (call-interactively (read-char))
-;;   )
-;; )
-;; (defun read-str (char)
-;;   (progn
-;;     (print char)
-;;     (if (equal char "^M")
-;;        char
-;;       (get-key))))
-
-;; (defun get-key ()  (read-key-sequence "Find File: "))
-
-;; (defun teste-action (candidate)
-;;   "Persistent action for file-related functionality.
-
-;; Previews the contents of a file in a temporary buffer."
-;;   (let ((buf (get-buffer-create " *helm-projectile persistent*")))
-;;     (cl-flet ((preview (candidate)
-;;                        (switch-to-buffer buf)
-;;                        (setq inhibit-read-only t)
-;;                        (erase-buffer)
-;;                        (insert-file-contents candidate)
-;;                        (let ((buffer-file-name candidate))
-;;                          (set-auto-mode))
-;;                        (font-lock-ensure)
-;;                        (setq inhibit-read-only nil)))
-;;       (if (and (helm-attr 'previewp)
-;;                (string= candidate (helm-attr 'current-candidate)))
-;;           (progn
-;;             (kill-buffer buf)
-;;             (helm-attrset 'previewp nil))
-;;         (preview candidate)
-;;         (helm-attrset 'previewp t)))
-;;     (helm-attrset 'current-candidate candidate)))
