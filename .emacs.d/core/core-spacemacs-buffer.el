@@ -16,10 +16,10 @@
 (defconst spacemacs-buffer-version-info "0.200.13"
   "Current version used to display addition release information.")
 
-(defconst spacemacs-buffer-name "*spacemacs*"
+(defconst spacemacs-buffer-name "*spacemags*"
   "The name of the spacemacs buffer.")
 
-(defconst spacemacs-buffer-logo-title "[S P A C E M A C S]"
+(defconst spacemacs-buffer-logo-title "[S P A C E M A G S]"
   "The title displayed beneath the logo.")
 
 (defconst spacemacs-buffer-buttons-startup-lists-offset 25
@@ -77,7 +77,7 @@ Internal use, do not set this variable.")
 (with-eval-after-load 'evil
   (evil-make-overriding-map spacemacs-buffer-mode-map 'motion))
 
-(define-derived-mode spacemacs-buffer-mode fundamental-mode "Spacemacs buffer"
+(define-derived-mode spacemacs-buffer-mode fundamental-mode "Spacemags buffer"
   "Spacemacs major mode for startup screen."
   :group 'spacemacs
   :syntax-table nil
@@ -221,7 +221,9 @@ Insert it in the first line of the buffer, right justified."
       (let ((version (format "%s@%s (%s)"
                              spacemacs-version
                              emacs-version
-                             dotspacemacs-distribution))
+                             "spacemags"
+                             ;dotspacemacs-distribution
+                             ))
             (buffer-read-only nil))
         (goto-char (point-min))
         (delete-region (point) (progn (end-of-line) (point)))
