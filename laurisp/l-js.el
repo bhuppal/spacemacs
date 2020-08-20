@@ -23,20 +23,21 @@
 
 (defun react-template (component-name)
   "Creates a react component string template"
-  (format "import React from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
+  (format "import React from 'react'
+import PropTypes from 'prop-types'
+import helpers from '../helpers'
+\n\n
+const {connectWithRedux} = helpers
 \n\n
 const %s = ({}) => {
-    return (<div/>);
+  return (<div/>)
 };\n
 %s.propTypes = {};
-\n\n
-const mapStateToProps = (state) => ({});
-const mapDispatchToProps = (dispatch) => bindActionCreators({}, dispatch);
-\n
-export default compose(connect(mapStateToProps, mapDispatchToProps))(%s);" component-name component-name component-name))
+
+export default connectWithRedux({
+  states: {},
+  actions: {}
+})(%s);" component-name component-name component-name))
 
 
 

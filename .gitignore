@@ -16,3 +16,8 @@
 .config/*
 Library/Caches/*
 Library/Preferences/*
+.nvm/
+.ts_node_repl_history
+.z
+.zcompdump-*  
+Library/Application Support/
