@@ -95,5 +95,6 @@ export default connectWithRedux({
     (when (and (contains modes major-mode) (file-executable-p eslint))
       (shell-command linter))))
 
-(add-hook 'after-save-hook #'run-lint-on-save)
+;(add-hook 'after-save-hook #'run-lint-on-save)
+
 

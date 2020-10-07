@@ -28,9 +28,17 @@
 (defconst spacemacs-release-notes-directory
   (expand-file-name (concat spacemacs-info-directory "release-notes/"))
   "Spacemacs release notes directory")
-(defconst spacemacs-banner-directory
-  (expand-file-name (concat spacemacs-core-directory "banners/"))
-  "Spacemacs banners directory.")
+(defconst lauremacs-home "~/")
+(defconst laurisp-dir (concat lauremacs-home "laurisp/"))
+(defconst laurisp (concat laurisp-dir "laurisp.el"))
+(defconst lauremacs-banner-directory
+  (expand-file-name (concat lauremacs-home "banners/"))
+  "Lauremacs banners directory.")
+(defconst spacemacs-banner-directory lauremacs-banner-directory)
+(defconst lauremacs-banner-gif-dir
+  (expand-file-name (concat lauremacs-banner-directory "gif/")))
+(defconst lauremacs-banner-gif-fridays
+  (expand-file-name (concat lauremacs-banner-gif-dir "fridays/")))
 (defconst spacemacs-banner-official-png
   (expand-file-name (concat spacemacs-banner-directory "img/spacemacs.png"))
   "Spacemacs official banner image.")

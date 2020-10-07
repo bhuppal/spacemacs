@@ -7,6 +7,8 @@ third part installs
 
 `brew install ispell`
 
+`brew install aspell`
+
 `npm i -g tern prettier`
 
 `pip3 install pygments`
