@@ -4,9 +4,8 @@
 ;; GNU Public License 3.0
 ;;
 
-
 ;;
-;; neotree icons functions
+;; neotree related functions
 ;;
 
 (defun get-ttfs (dir)
@@ -28,4 +27,7 @@
 
 
 
-
+(setq neo-smart-open t)
+(global-set-key (kbd "M-s M-s s") 'neotree-toggle) 
+(activate-neotree-icons)
+(setq neo-theme 'icons)
