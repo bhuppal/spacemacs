@@ -57,14 +57,16 @@
 (add-to-list 'auto-mode-alist '("\\.js.*$" . rjsx-mode))
 (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
 
+
+
+(add-hook 'rjsx-mode-hook 'my-tide-setup-hook)
+
+;; enable typescript-tslint checker
+(flycheck-add-mode 'typescript-tslint 'web-mode)
+
 (add-hook 'web-mode-hook 'company-mode)
 (add-hook 'web-mode-hook 'prettier-js-mode)
 (add-hook 'web-mode-hook 'my-tide-setup-hook
           (lambda () (pcase (file-name-extension buffer-file-name)
                   ("tsx" ('my-tide-setup-hook))
                   (_ (my-web-mode-hook)))))
-
-(add-hook 'rjsx-mode-hook 'my-tide-setup-hook)
-
-;; enable typescript-tslint checker
-(flycheck-add-mode 'typescript-tslint 'web-mode)
