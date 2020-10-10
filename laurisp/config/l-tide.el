@@ -64,9 +64,11 @@
 ;; enable typescript-tslint checker
 (flycheck-add-mode 'typescript-tslint 'web-mode)
 
-(add-hook 'web-mode-hook 'company-mode)
-(add-hook 'web-mode-hook 'prettier-js-mode)
 (add-hook 'web-mode-hook 'my-tide-setup-hook
           (lambda () (pcase (file-name-extension buffer-file-name)
                   ("tsx" ('my-tide-setup-hook))
                   (_ (my-web-mode-hook)))))
+
+(add-hook 'web-mode-hook 'company-mode)
+(add-hook 'web-mode-hook 'prettier-js-mode)
+(add-hook 'web-mode-hook #'turn-on-smartparens-mode t)
