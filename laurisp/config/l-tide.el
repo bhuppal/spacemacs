@@ -8,11 +8,11 @@
 ;; tide related functions
 ;;
 
-(defun my-tide-setup-hook ()
+(defun tide-setup-hook ()
     (tide-setup)
     (eldoc-mode)
+    (run-import-js)
     (tide-hl-identifier-mode +1)
-
     (setq web-mode-enable-auto-quoting nil)
     (setq web-mode-markup-indent-offset 2)
     (setq web-mode-code-indent-offset 2)
@@ -27,18 +27,25 @@
 (add-to-list 'auto-mode-alist '("\\.js.*$" . rjsx-mode))
 (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
 
+(add-hook 'before-save-hook 'tide-format-before-save)
 
-
-(add-hook 'rjsx-mode-hook 'my-tide-setup-hook)
+(add-hook 'rjsx-mode-hook 'tide-setup-hook)
 
 ;; enable typescript-tslint checker
 (flycheck-add-mode 'typescript-tslint 'web-mode)
 
-(add-hook 'web-mode-hook 'my-tide-setup-hook
+(add-hook 'web-mode-hook 'tide-setup-hook
           (lambda () (pcase (file-name-extension buffer-file-name)
-                  ("tsx" ('my-tide-setup-hook))
+                  ("tsx" ('tide-setup-hook))
                   (_ (my-web-mode-hook)))))
 
 (add-hook 'web-mode-hook 'company-mode)
 (add-hook 'web-mode-hook 'prettier-js-mode)
 (add-hook 'web-mode-hook #'turn-on-smartparens-mode t)
+
+(add-hook 'after-save-hook
+          (lambda ()
+            (if (get-process "import-js")
+                (import-js-fix))))
+
+

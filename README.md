@@ -13,6 +13,8 @@ third part installs
 
 `pip3 install pygments`
 
+`npm install -g import-js`
+
 
 # .private
 
