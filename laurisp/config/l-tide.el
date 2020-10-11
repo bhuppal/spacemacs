@@ -21,37 +21,7 @@
     (setq lsp-eslint-server-command '("node" (concat (getenv "HOME") "/var/src/vscode-eslint/server/out/eslintServer.js") "--stdio"))
     (set (make-local-variable 'company-backends)
          '((company-tide company-files :with company-yasnippet)
-           (company-dabbrev-code company-dabbrev)))
-    ;; (general-define-key
-    ;;  :states 'normal
-    ;;  :keymaps 'local
-    ;;  :prefix ", ."
-    ;;  "f" 'tide-fix
-    ;;  "i" 'tide-organize-imports
-    ;;  "u" 'tide-references
-    ;;  "R" 'tide-restart-server
-    ;;  "d" 'tide-documentation-at-point
-    ;;  "F" 'tide-format
-
-    ;;  "e s" 'tide-error-at-point
-    ;;  "e l" 'tide-project-errors
-    ;;  "e i" 'tide-add-tslint-disable-next-line
-    ;;  "e n" 'flycheck-next-error
-    ;;  "e p" 'flycheck-previous-error
-
-    ;;  "r r" 'tide-rename-symbol
-    ;;  "r F" 'tide-refactor
-    ;;  "r f" 'tide-rename-file)
-    ;; (general-define-key
-    ;;  :states 'normal
-    ;;  :keymaps 'local
-    ;;  :prefix "g"
-    ;;  :override t
-
-    ;;  "d" 'tide-jump-to-definition
-    ;;  "D" 'tide-jump-to-implementation
-    ;;  "b" 'tide-jump-back)
-    )
+           (company-dabbrev-code company-dabbrev))))
 
 ;; use rjsx-mode for .js* files except json
 (add-to-list 'auto-mode-alist '("\\.js.*$" . rjsx-mode))
