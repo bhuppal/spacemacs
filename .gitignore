@@ -21,3 +21,9 @@ Library/Preferences/*
 .z
 .zcompdump-*  
 Library/Application Support/
+**/*yarn*
+.zsh*
+*aspell*
+*ispell*
+.cabal/*
+.stack/*

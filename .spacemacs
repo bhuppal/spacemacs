@@ -29,16 +29,22 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     python
-     csv
-     typescript
-     html
      ;; ----------------------------------------------------------------
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+     python
+     csv
+     (typescript :variables
+                 javascript-backend 'tide
+                 typescript-fmt-tool 'prettier
+                 typescript-linter 'eslint)
+     html
      yaml
      clojure
-     javascript
+     (javascript :variables
+                 javascript-backend 'tide
+                 javascript-fmt-tool 'prettier
+                 node-add-modules-path t)
      spotify
      slack
      haskell
@@ -53,8 +59,6 @@ values."
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
-
-
      spell-checking
      syntax-checking
      ;; version-control
@@ -70,6 +74,7 @@ values."
      dart-mode
      prettier-js
      all-the-icons
+     import-js
      )
 
 
@@ -125,14 +130,14 @@ values."
    ;; (default 'vim)
    dotspacemacs-editing-style 'emacs
    ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
-   dotspacemacs-verbose-loading nil
+   dotspacemacs-verbose-loading t
    ;; Specify the startup banner. Default value is `official', it displays
    ;; the official spacemacs logo. An integer value is the index of text
    ;; banner, `random' chooses a random text banner in `core/banners'
    ;; directory. A string value must be a path to an image format supported
    ;; by your Emacs build.
    ;; If the value is nil then no banner is displayed. (default 'official)
-   dotspacemacs-startup-banner 'official
+   dotspacemacs-startup-banner 'random-gif
    ;; List of items to show in startup buffer or an association list of
    ;; the form `(list-type . list-size)`. If nil then it is disabled.
    ;; Possible values for list-type are:
@@ -322,9 +327,7 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-  (add-to-list 'load-path "~/laurisp")
-
-  )
+  (add-to-list 'load-path "~/laurisp"))
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
@@ -333,87 +336,7 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-
-  (require 'laurisp)
-
-  (yas-global-mode 1)
-
-  (setq js-indent-level 2)
-  (setq typescript-indent-level 2)
-  (setq sh-indentation 2)
-
-  ;; macOS bullsh*t
-  (when (memq window-system '(mac ns))
-    (package-install 'exec-path-from-shell)
-    (exec-path-from-shell-initialize))
-
-  ;; flycheck
-  (global-flycheck-mode)
-  (add-hook 'after-init-hook #'global-flycheck-mode)
-  
-  ;; use rjsx-mode for .js* files and webmode for mjml
-  (add-to-list 'auto-mode-alist '("\\.js.*$" . rjsx-mode))
-  (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
-
-  ;; dotfiles with sh-mode
-  (add-to-list 'auto-mode-alist '("/\\.[a-zA-Z0-09]*rc$" . sh-mode))
-  (add-to-list 'auto-mode-alist '("/\[a-zA-Z0-09]*rc$" . sh-mode))
-
-  ;;
-  ;; Projectile configs
-  ;;
-
-  ;; ignore dirs and files in projectile
-  (setq projectile-globally-ignored-directories
-        '(".git" ".svn" "out" "repl" "target" "venv" ".pub-cache" "node_modules" "ios" "android" "dist"))
-
-  (setq projectile-globally-ignored-files
-        '( ".DS_Store" "*.gz" "*.pyc" "*.jar" "*.tar.gz" "*.tgz" "*.zip" "*.png" ".packages" "*-lock.json" "*.chunk.*" ".lein-repl-history"))
-
-  (setq projectile-project-search-path '("~/../Loft/" "~/../Personal/"))
-
-
-  ;; spotify rebind
-  (global-set-key (kbd "M-m m u s p") 'spotify-playpause )
-  (global-set-key (kbd "M-m m u s f") 'spotify-next )
-  (global-set-key (kbd "M-m m u s b") 'spotify-previous )
-  (global-set-key (kbd "M-m m u s s") 'helm-spotify-plus ) ; search
-
-  ;; slack
-  (load-file "~/.private/slack-config.el")
-  (slack-start)
-
-  ;; neotree
-  (setq neo-smart-open t)
-  (global-set-key (kbd "M-s M-s s") 'neotree-toggle) 
-  (activate-neotree-icons)
-  (setq neo-theme 'icons)
-
-  (print standard-indent)
-  ;; walk through windows
-  (global-set-key (kbd "C-x <up>") 'evil-window-up)
-  (global-set-key (kbd "C-x <down>") 'evil-window-down)
-  (global-set-key (kbd "C-x <left>") 'evil-window-left)
-  (global-set-key (kbd "C-x <right>") 'evil-window-right)
-
-  ;; resize windows
-  (global-set-key (kbd "C-c C-=") 'enlarge-window-horizontally)
-  (global-set-key (kbd "C-c C--") 'shrink-window-horizontally)
-  (global-set-key (kbd "C-c C-0") 'enlarge-window)
-  (global-set-key (kbd "C-c C-o") 'shrink-window)
-
-  ;; paredit-mode
-  (sp-use-paredit-bindings) ;; other modules
-  (add-hook 'emacs-lisp-mode-hook                    'enable-paredit-mode)
-  (add-hook 'eval-expression-minibuffer-setup-hook   'enable-paredit-mode)
-  (add-hook 'ielm-mode-hook                          'enable-paredit-mode)
-  (add-hook 'lisp-mode-hook                          'enable-paredit-mode)
-  (add-hook 'lisp-interaction-mode-hook              'enable-paredit-mode)
-  (add-hook 'scheme-mode-hook                        'enable-paredit-mode)
-  (add-hook 'clojure-mode-hook                       'enable-paredit-mode)
-
-
-  )
+  (require 'laurisp))
 
 
 
@@ -426,8 +349,7 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(js2-strict-missing-semi-warning nil)
  '(package-selected-packages
-   (quote
-    (yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic prettier-js csv-mode tide typescript-mode clomacs xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help memoize all-the-icons yaml-mode dart-mode slack emojify circe oauth2 websocket ht alert log4e gntp spotify helm-spotify-plus multi clojure-snippets clj-refactor inflections paredit cider-eval-sexp-fu cider sesman queue parseedn clojure-mode parseclj a yasnippet-snippets tern rjsx-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data markdown-mode magit-popup gitignore-mode flyspell-correct pos-tip magit git-commit with-editor transient web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc coffee-mode flycheck ghc haskell-mode company yasnippet auto-complete define-word ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline smeargle reveal-in-osx-finder restart-emacs rainbow-delimiters popwin persp-mode pcre2el pbcopy paradox osx-trash osx-dictionary orgit org-bullets open-junk-file neotree move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum linum-relative link-hint launchctl intero indent-guide hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag haskell-snippets google-translate golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flycheck-haskell flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish company-statistics company-ghci company-ghc company-cabal column-enforce-mode cmm-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
+   '(grizzl import-js list-packages-ext yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic prettier-js csv-mode tide typescript-mode clomacs xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help memoize all-the-icons yaml-mode dart-mode slack emojify circe oauth2 websocket ht alert log4e gntp spotify helm-spotify-plus multi clojure-snippets clj-refactor inflections paredit cider-eval-sexp-fu cider sesman queue parseedn clojure-mode parseclj a yasnippet-snippets tern rjsx-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data markdown-mode magit-popup gitignore-mode flyspell-correct pos-tip magit git-commit with-editor transient web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc coffee-mode flycheck ghc haskell-mode company yasnippet auto-complete define-word ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline smeargle reveal-in-osx-finder restart-emacs rainbow-delimiters popwin persp-mode pcre2el pbcopy paradox osx-trash osx-dictionary orgit org-bullets open-junk-file neotree move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum linum-relative link-hint launchctl intero indent-guide hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag haskell-snippets google-translate golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flycheck-haskell flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish company-statistics company-ghci company-ghc company-cabal column-enforce-mode cmm-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))
  '(standard-indent 2)
  '(tab-width 1))
 (custom-set-faces

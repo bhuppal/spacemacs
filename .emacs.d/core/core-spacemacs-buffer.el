@@ -16,10 +16,10 @@
 (defconst spacemacs-buffer-version-info "0.200.13"
   "Current version used to display addition release information.")
 
-(defconst spacemacs-buffer-name "*spacemacs*"
+(defconst spacemacs-buffer-name "*lauremacs*"
   "The name of the spacemacs buffer.")
 
-(defconst spacemacs-buffer-logo-title "[S P A C E M A C S]"
+(defconst spacemacs-buffer-logo-title "[L A U R E M A C S]"
   "The title displayed beneath the logo.")
 
 (defconst spacemacs-buffer-buttons-startup-lists-offset 25
@@ -77,7 +77,8 @@ Internal use, do not set this variable.")
 (with-eval-after-load 'evil
   (evil-make-overriding-map spacemacs-buffer-mode-map 'motion))
 
-(define-derived-mode spacemacs-buffer-mode fundamental-mode "Spacemacs buffer"
+
+(define-derived-mode spacemacs-buffer-mode fundamental-mode "Lauremacs buffer"
   "Spacemacs major mode for startup screen."
   :group 'spacemacs
   :syntax-table nil
@@ -149,6 +150,31 @@ Cate special text banner can de reachable via `998', `cat' or `random*'.
     (spacemacs-buffer/toggle-note 'release-note)))
   (spacemacs//redisplay))
 
+(defun pseudo-random ()
+  "Returns a pseudo-random number using the day date as seed"
+    (let* ((date (replace-regexp-in-string " [0-9]+:[0-9]+:[0-9]+.*" "" (current-time-string)))
+           (number-list (seq-map (lambda (val) (* val 20478838511)) (string-to-list date))))
+      (seq-reduce
+       (lambda (acc val) (+ 853  (% (* acc val) 30113)))
+       number-list 1)))
+
+(defun day-index (length)
+  (% (pseudo-random) length))
+
+(defun lauremacs-buffer//choose-gif-dir ()
+  (let* ((week-day (subseq (current-time-string) 0 3)))
+    (if (equal week-day "Fri")
+        lauremacs-banner-gif-fridays
+      lauremacs-banner-gif-dir)))
+
+
+(defun lauremacs-buffer//choose-random-gif-banner ()
+  (let* ((gif-dir (lauremacs-buffer//choose-gif-dir))
+         (gifs (directory-files gif-dir t ".*\\.gif$"))
+         (idx (day-index (length gifs))))
+    (nth idx gifs)))
+
+
 (defun spacemacs-buffer//choose-banner ()
   "Return the full path of a banner based on the dotfile value."
   (when dotspacemacs-startup-banner
@@ -156,6 +182,12 @@ Cate special text banner can de reachable via `998', `cat' or `random*'.
            (if (and (display-graphic-p) (image-type-available-p 'png))
                spacemacs-banner-official-png
              (spacemacs-buffer//get-banner-path 1)))
+
+          ((eq 'random-gif dotspacemacs-startup-banner)
+           (if (and (display-graphic-p) (image-type-available-p 'gif))
+               (lauremacs-buffer//choose-random-gif-banner)
+             (spacemacs-buffer//get-banner-path 1)))
+
           ((eq 'random dotspacemacs-startup-banner)
            (spacemacs-buffer//choose-random-text-banner))
           ((eq 'random* dotspacemacs-startup-banner)
@@ -208,6 +240,8 @@ BANNER: the path to an ascii banner file."
       (insert "\n")
       (insert (make-string left-margin ?\s))
       (insert-image spec)
+      (if (eq (image-type banner) 'gif)
+        (image-animate spec 0 t))
       (insert "\n\n")
       (insert (make-string (max 0 (floor (/ (- spacemacs-buffer--window-width
                                                (+ (length title) 1)) 2))) ?\s))
@@ -221,7 +255,9 @@ Insert it in the first line of the buffer, right justified."
       (let ((version (format "%s@%s (%s)"
                              spacemacs-version
                              emacs-version
-                             dotspacemacs-distribution))
+                             "lauremacs"
+                             ;dotspacemacs-distribution
+                             ))
             (buffer-read-only nil))
         (goto-char (point-min))
         (delete-region (point) (progn (end-of-line) (point)))
