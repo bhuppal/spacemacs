@@ -3,7 +3,7 @@
 Clone this repo in your ~/
 
 # installs
-third part installs
+third party installs
 
 `brew install ispell`
 
