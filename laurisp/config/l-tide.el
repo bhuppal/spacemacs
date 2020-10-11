@@ -23,29 +23,30 @@
          '((company-tide company-files :with company-yasnippet)
            (company-dabbrev-code company-dabbrev))))
 
-;; use rjsx-mode for .js* files except json
-(add-to-list 'auto-mode-alist '("\\.js.*$" . rjsx-mode))
-(add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
-
+;; hooks
 (add-hook 'before-save-hook 'tide-format-before-save)
-
-(add-hook 'rjsx-mode-hook 'tide-setup-hook)
-
-;; enable typescript-tslint checker
-(flycheck-add-mode 'typescript-tslint 'web-mode)
-
-(add-hook 'web-mode-hook 'tide-setup-hook
-          (lambda () (pcase (file-name-extension buffer-file-name)
-                  ("tsx" ('tide-setup-hook))
-                  (_ (my-web-mode-hook)))))
-
-(add-hook 'web-mode-hook 'company-mode)
-(add-hook 'web-mode-hook 'prettier-js-mode)
-(add-hook 'web-mode-hook #'turn-on-smartparens-mode t)
-
 (add-hook 'after-save-hook
           (lambda ()
             (if (get-process "import-js")
                 (import-js-fix))))
+
+
+;; use rjsx-mode for .js* files except json and use tide with rjsx
+(add-to-list 'auto-mode-alist '("\\.js.*$" . rjsx-mode))
+(add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
+(add-hook 'rjsx-mode-hook 'tide-setup-hook)
+
+
+;; web-mode extra config
+(add-hook 'web-mode-hook 'tide-setup-hook
+          (lambda () (pcase (file-name-extension buffer-file-name)
+                  ("tsx" ('tide-setup-hook))
+                  (_ (my-web-mode-hook)))))
+(flycheck-add-mode 'typescript-tslint 'web-mode)
+(add-hook 'web-mode-hook 'company-mode)
+(add-hook 'web-mode-hook 'prettier-js-mode)
+(add-hook 'web-mode-hook #'turn-on-smartparens-mode t)
+
+
 
 

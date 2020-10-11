@@ -9,11 +9,10 @@
 ;;
 
 
-;; yasnippet
-(yas-global-mode 1)
 
 ;; flycheck
 (global-flycheck-mode)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
+;; company-mode 
 (global-company-mode)
