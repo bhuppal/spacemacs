@@ -42,6 +42,7 @@ Call spacemacs anywhere the same way you call emacs e.g. `$ spacemacs App.clj`
 $ export PATH="~/spacemacs/scripts:$PATH"
 ```
 
-# Manual fixes
+# Manual fixes or changes directly in `.emacs.d/`
 
+1. Added gif to homepage, changed buffer name etc: [commit](https://github.com/Viglioni/spacemacs/commit/f1e14a15193bb6966325944fb5cdc84113425c65)
 1. Linum bug: [spacemacs commit](https://github.com/syl20bnr/spacemacs/pull/9209/files ) : [my commit](https://github.com/Viglioni/spacemacs/commit/85b437e16a9c76157a8a9b4f82de9de570318231 ) 
